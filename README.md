@@ -1,2 +1,2 @@
-# webServer
-webServer for image impainting
+# webserver
+webserver for image inpainting
