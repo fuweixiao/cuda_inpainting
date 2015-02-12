@@ -1,2 +1,2 @@
-# webserver
-webserver for image inpainting
+# cuda_inpainting
+cuda_inpainting
