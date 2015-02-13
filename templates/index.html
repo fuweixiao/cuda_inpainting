@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<title>Yue Pao</title>
+<html>
+	<body>
+		<h1>Look we are going to do the image inpainting!!!!!!!!!!!!!!!!!!!! </h1>
+		<p> yyj needs a girlfriend </p>
+		{% if name %}
+			<h1>Hello {{ name }}!</h1>
+		{% else %}
+		    <h1>Hello World!</h1>
+		{% endif %}
+		<form action = "/upload" method = "POST" enctype="multipart/form-data">
+			<input type="file" name = "file"> </input> 
+			<input type="submit" value="Upload!"/>
+		</form>
+	</body>
+</html>
