@@ -1,0 +1,31 @@
+#img1 {
+	position : absolute;
+	left : 50px;
+	top : 100px;
+	height : 600px;
+	width : 600px;
+	border : solid 1px black;
+}
+
+#img2 {
+	position : absolute;
+	right : 50px;
+	top : 100px;
+	height : 600px;
+	width : 600px;
+	border : solid 1px black;
+}
+h1 {
+	text-align: center;
+}
+
+img {
+	height : 600px;
+	width : 600px;
+}
+form {
+	position : absolute;
+	top : 720px; 
+}
+
+

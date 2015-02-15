@@ -1,18 +1,87 @@
 <!DOCTYPE html>
-<title>Yue Pao</title>
+<title>Cuda</title>
 <html>
+	<head> 
+		<link rel="stylesheet" type="text/css" href="static/style.css"/>
+	</head>
 	<body>
-		<h1>Look we are going to do the image inpainting!!!!!!!!!!!!!!!!!!!! </h1>
-		<p> yyj needs a girlfriend </p>
+	<h1>Image inpainting</h1>
+	<div id=img1 onmousedown='down(event)' onmouseup='up(event)' onmousemove='move(event)'>
 		{% if name %}
-			<h1>{{ name }}!</h1>
-			<img src = "/static/test.png"></img>  
-		{% else %}
-		    <h1>Hello World!</h1>
+		<img src = "/static/test.jpg" ></img>  
+		{% endif %}	
+		<div id=rect style='position:absolute;background-color: #FF99FF; opacity: 0.4; filter: alpha(opacity=40);'> </div>
+	</div>
+	<div id=img2>
+		{% if inpainting %}
+		<img src = "/static/done.jpg" ></img>	
 		{% endif %}
-		<form action = "/upload" method = "POST" enctype="multipart/form-data">
-			<input type="file" name = "file"> </input> 
-			<input type="submit" value="Upload!"/>
-		</form>
+	</div>
+	<form action = "/upload" method = "POST" enctype="multipart/form-data" style = "left:150px">
+		<input type="file" name = "file"> </input> 
+		<input type="submit" value="Upload!"/>
+	</form>
+	<form action = "/inpainting" method = "POST" enctype="multipart/form-data" style = "float:right; position: absolute; left:1100px">
+		<input type="submit" value="Inpainting!"/>
+	</form>
 	</body>
+	<script language = "javascript">
+		var select = false;
+		var rect = document.getElementById("rect");
+		rect.style.width = 0;
+		rect.style.height = 0;
+		rect.style.visibility = 'hidden';
+		rect.style.zIndex = 1000;
+
+		var downX = 0;
+		var downY = 0;
+		var mouseX2=downX;
+		var mouseY2=downY;
+		function down(event) {
+			select = true;
+			downX = event.clientX;
+			downY = event.clientY;
+			rect.style.left = downX;
+			rect.style.top = downY;
+		}
+		
+		function up(event) {
+			select = false;
+			//rect.style.visibility = 'hidden';
+			imghandler = document.getElementById("img1");
+			imghandler.onmousedown = null;
+			imghandler.onmousemove = null;
+		}
+		
+		function move(event) {
+			mouseX2 = event.clientX;
+		    mouseY2 = event.clientY;
+			rect.style.width = Math.abs( mouseX2 - downX ) + "px";
+			rect.style.height = Math.abs( mouseY2 - downY ) + "px";
+			if(select){
+				rect.style.visibility = 'visible';
+				// A part
+				if( mouseX2 < downX && mouseY2 < downY ){
+					rect.style.left = mouseX2 + "px";
+					rect.style.top = mouseY2 + "px" ;    
+				}
+				// B part
+				if( mouseX2 > downX && mouseY2 < downY){
+					rect.style.left = downX + "px";
+					rect.style.top = mouseY2 + "px";    
+				}
+				// C part
+				if( mouseX2 < downX && mouseY2 > downY){
+					rect.style.left = mouseX2 + "px";
+					rect.style.top = downY + "px";    
+				}
+				// D part
+				if( mouseX2 > downX && mouseY2 > downY ){
+					rect.style.left = downX + "px";
+					rect.style.top = downY + "px";
+				}            
+			}
+		}
+	</script>
+
 </html>
