@@ -2,13 +2,14 @@
 <title>Cuda</title>
 <html>
 	<head> 
+		<link rel="shortcut icon" href="/static/favicon.ico">
 		<link rel="stylesheet" type="text/css" href="static/style.css"/>
 	</head>
 	<body>
 	<h1>Image inpainting</h1>
 	<div id=img1 onmousedown='down(event)' onmouseup='up(event)' onmousemove='move(event)'>
 		{% if name %}
-		<img src = "/static/test.jpg" ></img>  
+		<img draggable="false" src = "/static/test.jpg" ></img>  
 		{% endif %}	
 		<div id=rect style='position:absolute;background-color: #FF99FF; opacity: 0.4; filter: alpha(opacity=40);'> </div>
 	</div>
@@ -17,10 +18,13 @@
 		<img src = "/static/done.jpg" ></img>	
 		{% endif %}
 	</div>
+	<div>
 	<form action = "/upload" method = "POST" enctype="multipart/form-data" style = "left:150px">
 		<input type="file" name = "file"> </input> 
 		<input type="submit" value="Upload!"/>
 	</form>
+	<button id = but1 onclick = "clearall()"> Clear </button>
+	</div>
 	<form action = "/inpainting" method = "POST" enctype="multipart/form-data" style = "float:right; position: absolute; left:1100px">
 		<input type="submit" value="Inpainting!"/>
 	</form>
@@ -32,11 +36,14 @@
 		rect.style.height = 0;
 		rect.style.visibility = 'hidden';
 		rect.style.zIndex = 1000;
-
+		var gap = 100;
+		var gapx = 50;
 		var downX = 0;
 		var downY = 0;
 		var mouseX2=downX;
 		var mouseY2=downY;
+		var fun1 = function() { down(event);};
+		var fun2 = function() { move(event);};
 		function down(event) {
 			select = true;
 			downX = event.clientX;
@@ -46,11 +53,15 @@
 		}
 		
 		function up(event) {
-			select = false;
 			//rect.style.visibility = 'hidden';
 			imghandler = document.getElementById("img1");
-			imghandler.onmousedown = null;
-			imghandler.onmousemove = null;
+			if(select){ 
+				imghandler.onmousedown = null;
+				imghandler.onmousemove = null;
+				imghandler.removeEventListener("mousedown",fun1);
+				imghandler.removeEventListener("mousemove",fun2);
+				select = false;
+			}
 		}
 		
 		function move(event) {
@@ -62,25 +73,31 @@
 				rect.style.visibility = 'visible';
 				// A part
 				if( mouseX2 < downX && mouseY2 < downY ){
-					rect.style.left = mouseX2 + "px";
-					rect.style.top = mouseY2 + "px" ;    
+					rect.style.left = mouseX2 -gapx + "px";
+					rect.style.top = mouseY2 - gap + "px" ;    
 				}
 				// B part
 				if( mouseX2 > downX && mouseY2 < downY){
-					rect.style.left = downX + "px";
-					rect.style.top = mouseY2 + "px";    
+					rect.style.left = downX -gapx + "px";
+					rect.style.top = mouseY2 - gap + "px";    
 				}
 				// C part
 				if( mouseX2 < downX && mouseY2 > downY){
-					rect.style.left = mouseX2 + "px";
-					rect.style.top = downY + "px";    
+					rect.style.left = mouseX2 -gapx + "px";
+					rect.style.top = downY - gap + "px";    
 				}
 				// D part
 				if( mouseX2 > downX && mouseY2 > downY ){
-					rect.style.left = downX + "px";
-					rect.style.top = downY + "px";
+					rect.style.left = downX -gapx + "px";
+					rect.style.top = downY - gap + "px";
 				}            
 			}
+		}
+		function clearall() {
+			rect.style.visibility = 'hidden';
+			imghandler = document.getElementById("img1");
+			imghandler.addEventListener("mousedown", fun1);
+			imghandler.addEventListener("mousemove", fun2);
 		}
 	</script>
 
