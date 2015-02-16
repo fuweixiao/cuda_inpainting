@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, jsonify
 from PIL import Image
 app = Flask(__name__)
 
@@ -24,7 +24,8 @@ def inpainting():
     if request.method == 'POST':
         img = Image.open('/home/smile/workspace/cuda_inpainting/static/test.png')
         img.save('/home/smile/workspace/cuda_inpainting/static/done.jpg')
-        return render_template('index.html', name = 'impainted', inpainting = True)
+        print request.get_json(force=False, silent=False, cache=True)
+        return jsonify(address = "static/done.jpg" )
 if __name__ == '__main__':
     app.debug = True;
     app.run('0.0.0.0')

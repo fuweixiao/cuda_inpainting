@@ -4,6 +4,7 @@
 	<head> 
 		<link rel="shortcut icon" href="/static/favicon.ico">
 		<link rel="stylesheet" type="text/css" href="static/style.css"/>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
 	</head>
 	<body>
 	<h1>Image inpainting</h1>
@@ -14,9 +15,7 @@
 		<div id=rect style='position:absolute;background-color: #FF99FF; opacity: 0.4; filter: alpha(opacity=40);'> </div>
 	</div>
 	<div id=img2>
-		{% if inpainting %}
-		<img src = "/static/done.jpg" ></img>	
-		{% endif %}
+		<img id = done></img>	
 	</div>
 	<div>
 	<form action = "/upload" method = "POST" enctype="multipart/form-data" style = "left:150px">
@@ -25,9 +24,7 @@
 	</form>
 	<button id = but1 onclick = "clearall()"> Clear </button>
 	</div>
-	<form action = "/inpainting" method = "POST" enctype="multipart/form-data" style = "float:right; position: absolute; left:1100px">
-		<input type="submit" value="Inpainting!"/>
-	</form>
+	<button id = but2 onclick= "inpainting()"> Inpainting! </button>
 	</body>
 	<script language = "javascript">
 		var select = false;
@@ -98,6 +95,27 @@
 			imghandler = document.getElementById("img1");
 			imghandler.addEventListener("mousedown", fun1);
 			imghandler.addEventListener("mousemove", fun2);
+		}
+		function inpainting() {
+			var obj = {};
+			obj["x"] = rect.style.left;
+			obj["y"] = rect.style.top;
+			obj["width"] = rect.style.width;
+			obj["height"] = rect.style.height;
+			$.ajax ({
+				url : "/inpainting",
+				type : "POST",
+				data : JSON.stringify(obj),
+				contentType: "application/json",
+				dataType : "json",
+				success: function (result) {
+					document.getElementById("done").src = result["address"];
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert(xhr.status);
+					alert(thrownError);	
+				}
+			});
 		}
 	</script>
 
