@@ -16,7 +16,7 @@ def upload_file():
         inputname = str(uuid.uuid4())
         print inputname
         global path
-        path = '/home/smile/workspace/cuda_inpainting/static/' + inputname + '.png'
+        path = 'static/' + inputname + '.png'
         f.save(path)
         size = [600,600]
         img = Image.open(path)
@@ -33,7 +33,7 @@ def inpainting():
         #img.save('/home/smile/workspace/cuda_inpainting/static/done.jpg')
         args = request.get_json(force=False, silent=False, cache=True)
         output = str(uuid.uuid4())
-        outputpath = '/home/smile/workspace/cuda_inpainting/static/' + output + '.jpg' 
+        outputpath = 'static/' + output + '.jpg' 
         cmd = 'cpp/inpainting ' + path + ' ' + args["x"] + 'h ' + args["y"] + ' ' + args["width"] + ' ' + args["height"] + ' ' + outputpath + ' ' + '10' 
         os.system(cmd);
         return jsonify(address = "static/" + output + '.jpg' )
