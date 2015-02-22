@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, url_for, jsonify
 from PIL import Image
+import os
+import uuid
 app = Flask(__name__)
 
 @app.route('/')
@@ -11,21 +13,29 @@ def upload_file():
         return render_template('index.html')
     if request.method == 'POST':
         f = request.files["file"]
-        f.save('/home/smile/workspace/cuda_inpainting/static/test.png')
-        size = [1600,1600]
-        img = Image.open('/home/smile/workspace/cuda_inpainting/static/test.png')
+        name = str(uuid.uuid1())
+        global path
+        path = '/home/smile/workspace/cuda_inpainting/static/' + name + '.png'
+        f.save(path)
+        size = [600,600]
+        img = Image.open(path)
         #img.thumbnail(size, Image.ANTIALIAS)
-        img.save('/home/smile/workspace/cuda_inpainting/static/test.jpg')
+        image = img.resize((600, 600), Image.ANTIALIAS)
+        image.save(path)
         return render_template('index.html', name = 'uploaded', inpainting = False)
 @app.route('/inpainting', methods = ['GET','POST'])
 def inpainting():
     if request.method == 'GET':
         return render_template('index.html')
     if request.method == 'POST':
-        img = Image.open('/home/smile/workspace/cuda_inpainting/static/test.png')
-        img.save('/home/smile/workspace/cuda_inpainting/static/done.jpg')
-        print request.get_json(force=False, silent=False, cache=True)
-        return jsonify(address = "static/done.jpg" )
+        img = Image.open(path)
+        #img.save('/home/smile/workspace/cuda_inpainting/static/done.jpg')
+        args = request.get_json(force=False, silent=False, cache=True)
+        output = str(uuid.uuid1())
+        outputpath = '/home/smile/workspace/cuda_inpainting/static/' + output + '.jpg' 
+        cmd = 'cpp/inpainting ' + path + ' ' + args["x"] + 'h ' + args["y"] + ' ' + args["width"] + ' ' + args["height"] + ' ' + outputpath + ' ' + '10' 
+        os.system(cmd);
+        return jsonify(address = "static/" + output + '.jpg' )
 if __name__ == '__main__':
     app.debug = True;
     app.run('0.0.0.0')
