@@ -13,16 +13,17 @@ def upload_file():
         return render_template('index.html')
     if request.method == 'POST':
         f = request.files["file"]
-        name = str(uuid.uuid1())
+        inputname = str(uuid.uuid4())
+        print inputname
         global path
-        path = '/home/smile/workspace/cuda_inpainting/static/' + name + '.png'
+        path = '/home/smile/workspace/cuda_inpainting/static/' + inputname + '.png'
         f.save(path)
         size = [600,600]
         img = Image.open(path)
         #img.thumbnail(size, Image.ANTIALIAS)
         image = img.resize((600, 600), Image.ANTIALIAS)
         image.save(path)
-        return render_template('index.html', name = 'uploaded', inpainting = False)
+        return render_template('index.html', name = 'static/' + inputname + '.png', inpainting = False)
 @app.route('/inpainting', methods = ['GET','POST'])
 def inpainting():
     if request.method == 'GET':
@@ -31,7 +32,7 @@ def inpainting():
         img = Image.open(path)
         #img.save('/home/smile/workspace/cuda_inpainting/static/done.jpg')
         args = request.get_json(force=False, silent=False, cache=True)
-        output = str(uuid.uuid1())
+        output = str(uuid.uuid4())
         outputpath = '/home/smile/workspace/cuda_inpainting/static/' + output + '.jpg' 
         cmd = 'cpp/inpainting ' + path + ' ' + args["x"] + 'h ' + args["y"] + ' ' + args["width"] + ' ' + args["height"] + ' ' + outputpath + ' ' + '10' 
         os.system(cmd);

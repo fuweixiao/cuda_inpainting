@@ -10,7 +10,7 @@
 	<h1>Image inpainting</h1>
 	<div id=img1 onmousedown='down(event)' onmouseup='up(event)' onmousemove='move(event)'>
 		{% if name %}
-		<img draggable="false" src = "/static/test.jpg" ></img>  
+		<img draggable="false" src = {{ name }} ></img>  
 		{% endif %}	
 		<div id=rect style='position:absolute;background-color: #FF99FF; opacity: 0.4; filter: alpha(opacity=40);'> </div>
 	</div>
