@@ -1,5 +1,5 @@
 # Image Inpainting Using Belief Propagation
-This project is a web service for image inpainting. 
+This project is a web service for image inpainting. It is an implementation and optimization of the paper http://www.csd.uoc.gr/~komod/publications/docs/completion_cvpr2006.pdf
 
 The backend is build with flask, which requires python 2.7 and flask.
 You can install flask simply by running this:
