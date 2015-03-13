@@ -18,15 +18,21 @@ const int CudaInpainting::NODE_HEIGHT = CudaInpainting::PATCH_HEIGHT / 2;
 const float CudaInpainting::CONST_FULL_MSG = CudaInpainting::PATCH_WIDTH * 
 			CudaInpainting::PATCH_HEIGHT * 255 * 255 * 3 / 2.0f;
 
+// a hepler fo copying memory to GPU
 static void CopyToDevice(void *src, void *dst, uint32_t size) {
 	cudaMemcpy(dst, src, size, cudaMemcpyHostToDevice);
 }
 
+// a helper to copying memoery from GPU to the host
 static void CopyFromDevice(void *src, void *dst, uint32_t size) {
 	cudaMemcpy(dst, src, size, cudaMemcpyDeviceToHost);
 }
 
 // public functions
+
+
+// the constructor
+// take one arguement as the input image file
 CudaInpainting::CudaInpainting(const char *path) {
 	initFlag = false;
 	image = imread(path, CV_LOAD_IMAGE_COLOR);
@@ -53,10 +59,13 @@ CudaInpainting::CudaInpainting(const char *path) {
 			imageData[3 * image.cols * y + 3 * x + 2] = vec[2];
 		}
 	}
+
+	// copy the raw data to the GPU
 	CopyToDevice(imageData, deviceImageData, sizeof(float) * 3 * image.cols * image.rows);
 	imgWidth = image.cols;
 	imgHeight = image.rows;
 
+	// initialize all the ointers
 	choiceList = nullptr;
 	nodeTable = nullptr;
 	patchList = nullptr;
@@ -70,6 +79,7 @@ CudaInpainting::CudaInpainting(const char *path) {
 	deviceChoiceList = nullptr;
 }
 
+// destructor for the CudaInpainting
 CudaInpainting::~CudaInpainting() {
 	if(imageData) {
 		delete imageData;
