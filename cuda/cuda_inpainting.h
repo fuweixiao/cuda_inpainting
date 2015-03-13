@@ -8,7 +8,9 @@
 #include <cmath>
 #include <unistd.h>
 #include <vector>
+#include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 
 
@@ -74,7 +76,7 @@ private:
 	float CalculateSSD(Patch& p1, Patch& p2, EPOS pos);
 	void CalculateSSDTable();
 	void InitNodeTable();
-	void RunIteration();
+	void RunIteration(int times);
 	void SelectPatch();
 	void FillPatch();
 

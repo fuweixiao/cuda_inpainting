@@ -34,9 +34,9 @@ def inpainting():
         args = request.get_json(force=False, silent=False, cache=True)
         output = str(uuid.uuid4())
         outputpath = 'static/' + output + '.jpg' 
-        cmd = 'cpp/inpainting ' + path + ' ' + args["x"] + 'h ' + args["y"] + ' ' + args["width"] + ' ' + args["height"] + ' ' + outputpath + ' ' + '10' 
+        cmd = 'cuda/inpainting ' + path + ' ' + args["x"] + 'h ' + args["y"] + ' ' + args["width"] + ' ' + args["height"] + ' ' + outputpath + ' ' + '10' 
         os.system(cmd);
         return jsonify(address = "static/" + output + '.jpg' )
 if __name__ == '__main__':
     app.debug = True;
-    app.run('0.0.0.0')
+    app.run('0.0.0.0', 9000)
