@@ -10,7 +10,7 @@
 	<h1>Image inpainting</h1>
 	<div id=img1 onmousedown='down(event)' onmouseup='up(event)' onmousemove='move(event)'>
 		{% if name %}
-		<img draggable="false" src = {{ name }} ></img>  
+		<img id = imgleft draggable="false" src = {{ name }} ></img>  
 		{% endif %}	
 		<div id=rect style='position:absolute;background-color: #FF99FF; opacity: 0.4; filter: alpha(opacity=40);'> </div>
 	</div>
@@ -18,7 +18,7 @@
 		<img id = done></img>	
 	</div>
 	<div>
-	<form action = "/upload" method = "POST" enctype="multipart/form-data" style = "left:150px">
+	<form id = "inputfile" action = "/upload" method = "POST" enctype="multipart/form-data" style = "left:150px">
 		<input type="file" name = "file"> </input> 
 		<input type="submit" value="Upload!"/>
 	</form>
@@ -45,6 +45,10 @@
 			select = true;
 			downX = event.clientX;
 			downY = event.clientY;
+			if(downX < 20 + gapx || downX > 580 + gapx || downY < 20 + gap || downY > 580 + gap) {
+				select = false;
+				clearall();
+			}
 			rect.style.left = downX;
 			rect.style.top = downY;
 		}
@@ -63,7 +67,7 @@
 		
 		function move(event) {
 			mouseX2 = event.clientX;
-		    mouseY2 = event.clientY;
+		    	mouseY2 = event.clientY;
 			rect.style.width = Math.abs( mouseX2 - downX ) + "px";
 			rect.style.height = Math.abs( mouseY2 - downY ) + "px";
 			if(select){
@@ -88,6 +92,11 @@
 					rect.style.left = downX -gapx + "px";
 					rect.style.top = downY - gap + "px";
 				}            
+				//if(parseInt(rect.style.left,10) < 20 || parseInt(rect.style.left,10) > 580 || parseInt(rect.style.top,10) < 20 || parseInt(rect.style.top,10) > 580) {
+				//	select = false;
+				//	rect.style.visibility = 'hidden';
+				//	clearall();
+				//}
 			}
 		}
 		function clearall() {
@@ -102,6 +111,7 @@
 			obj["y"] = rect.style.top;
 			obj["width"] = rect.style.width;
 			obj["height"] = rect.style.height;
+			obj["src"] = document.getElementById("imgleft").src;
 			$.ajax ({
 				url : "/inpainting",
 				type : "POST",

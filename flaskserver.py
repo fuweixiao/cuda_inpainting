@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, url_for, jsonify
 from PIL import Image
-import os
+import os, sys
 import uuid
 app = Flask(__name__)
+binfile = 'cpp/inpaiting'
+port = 9000
 
 @app.route('/')
 def loadpage(name = None):
@@ -20,7 +22,6 @@ def upload_file():
         f.save(path)
         size = [600,600]
         img = Image.open(path)
-        #img.thumbnail(size, Image.ANTIALIAS)
         image = img.resize((600, 600), Image.ANTIALIAS)
         image.save(path)
         return render_template('index.html', name = 'static/' + inputname + '.png', inpainting = False)
@@ -29,14 +30,23 @@ def inpainting():
     if request.method == 'GET':
         return render_template('index.html')
     if request.method == 'POST':
-        img = Image.open(path)
-        #img.save('/home/smile/workspace/cuda_inpainting/static/done.jpg')
         args = request.get_json(force=False, silent=False, cache=True)
-        output = str(uuid.uuid4())
+	imgpath = args["src"].split(str(port) + '/')[-1]
+	#img = Image.open(args["src"].split(str(port) + '/')[-1])
+	
+	#save output
+	output = str(uuid.uuid4())
         outputpath = 'static/' + output + '.jpg' 
-        cmd = 'cuda/inpainting ' + path + ' ' + args["x"] + 'h ' + args["y"] + ' ' + args["width"] + ' ' + args["height"] + ' ' + outputpath + ' ' + '10' 
+	
+	#run cpp for image inpainting
+        cmd = binfile + ' '  + imgpath + ' ' + args["x"] + 'h ' + args["y"] + ' ' + args["width"] + ' ' + args["height"] + ' ' + outputpath + ' ' + '10' 
         os.system(cmd);
         return jsonify(address = "static/" + output + '.jpg' )
 if __name__ == '__main__':
+    if len(sys.argv) == 2 and sys.argv[1] == 'CUDA':
+    	print "Running CUDA version"
+	binfile = 'cuda/inpainting'
+    else:
+        print "Running CPP version"
     app.debug = True;
-    app.run('0.0.0.0', 9000)
+    app.run('0.0.0.0', port)
