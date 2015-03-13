@@ -1,4 +1,4 @@
-# cuda_inpainting
+# Image Inpainting Using Belief Propagation
 This project is a web service for image inpainting. 
 
 The backend is build with flask, which requires python 2.7 and flask.
