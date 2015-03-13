@@ -1,6 +1,8 @@
 # Image Inpainting Using Belief Propagation
 This project is a web service for image inpainting. It is an implementation and optimization of the paper http://www.csd.uoc.gr/~komod/publications/docs/completion_cvpr2006.pdf
 
+Below is the instructions for Linux users:
+
 To download the code run:
 ```
 git clone https://github.com/fuweixiao/cuda_inpainting.git
@@ -10,7 +12,7 @@ You can install flask simply by running this:
 ```
 sudo pip install flask
 ```
-We use opencv to load images, if you don't have it on your computer, run this:
+We use opencv to load images, if you don't have it on your computer(ubuntu), run this:
 ```
 sudo apt-get install libopencv-dev
 ```
