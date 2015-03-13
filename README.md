@@ -5,11 +5,6 @@ To download the code run:
 ```
 git clone https://github.com/fuweixiao/cuda_inpainting.git
 ```
-
-To compile the code:
-```
-make
-```
 The backend is build with flask, which requires python 2.7 and flask.
 You can install flask simply by running this:
 ```
@@ -19,6 +14,12 @@ We use opencv to load images, if you don't have it on your computer, run this:
 ```
 sudo apt-get install libopencv-dev
 ```
+
+To compile the code:
+```
+make
+```
+
 You can run the web service like this:
 ```
 python flaskserver.py
