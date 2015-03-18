@@ -12,7 +12,7 @@ You can install flask simply by running this:
 ```
 sudo pip install flask
 ```
-We use opencv to load images, if you don't have it on your computer(ubuntu), run this:
+We use opencv to load images, if you don't have it on your computer(Ubuntu), run this:
 ```
 sudo apt-get install libopencv-dev
 ```
