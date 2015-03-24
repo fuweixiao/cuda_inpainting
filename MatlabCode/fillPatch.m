@@ -29,6 +29,8 @@ function [new_img] = pastePatch(new_img, old_img, nodeMidX, nodeMidY, patchX, pa
     
     for i = 0:patchH - 1
         for j = 0:patchW - 1
+    %for i = 0:nodeH - 1
+    %    for j = 0:nodeW - 1
             new_img(yy + i, xx + j, :) = old_img(patchY + i, patchX + j, :);
         end
     end

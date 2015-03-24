@@ -1,12 +1,14 @@
+clear;
+clc;
 % patch & node size
 radius = 16;
 patchW = radius; patchH = radius;
 nodeW = patchW / 2; nodeH = patchH / 2;
 % mask area 
-maskX = 390; maskY = 240; maskW = 3; maskH = 3;
+maskX = 300; maskY = 200; maskW = 3; maskH = 3;
 maskW = maskW * patchW; maskH = maskH * patchH;
 
-iteration = 10;
+iteration = 5;
 old_img = imread('fig.jpg');
 img = im2double(old_img);
 [imgH, imgW, imgChannel] = size(img);
@@ -31,19 +33,24 @@ end
 %oldMsg
 %edgeCost
 label = selectPatch(oldMsg, edgeCost, label);
-oldMsg
-label
+%oldMsg
+%label
 %label;
 new_img = fillPatch(old_img, nodeMidX, nodeMidY, listPatchX, listPatchY, label);
-for j = maskX:1:maskX+ maskW
-    i = maskY;
-    new_img(i, j, :) = zeros(3,1);
-end
-for i = maskY:1:maskY+ maskH
-    j = maskX;
-    new_img(i, j, :) = zeros(3,1);
-end
+%for j = maskX:1:maskX+ maskW
+%    i = maskY;
+%    new_img(i, j, :) = zeros(3,1);
+%end
+%for i = maskY:1:maskY+ maskH
+%    j = maskX;
+%    new_img(i, j, :) = zeros(3,1);
+%end
 % writing back to the img
+
+%for j = 1:3
+%    new_img(maskY:maskY + maskH, maskX:maskX + maskW, j) = medfilt2(new_img(maskY:maskY + maskH, maskX:maskX + maskW, j));
+%end
+
 imwrite(new_img, 'fig_new.jpg');
 
 

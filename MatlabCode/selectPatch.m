@@ -1,7 +1,6 @@
 function label = selectPatch(oldMsg, edgeCost, label);
 % patch & node size
-radius = 16;
-patchW = radius; patchH = radius;
+radius = 16;patchW = radius; patchH = radius;
 nodeW = patchW / 2; nodeH = patchH / 2;
 %
 [hh, ww, len] = size(edgeCost);
