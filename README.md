@@ -23,7 +23,7 @@ make
 ```
 To compile the code with only CPU:
 ```
-make cpu
+make cpp
 ```
 To compile the code with only GPU:
 ```
